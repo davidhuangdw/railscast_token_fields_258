@@ -1,28 +1,45 @@
-== README
+* jquery tokeninput
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+        token_way = ->
+          $('#book_author_tokens').tokenInput '/authors.json',
+            theme: 'facebook'
+            jsonContainer:'authors'
+            prePopulate: $('#book_author_tokens').data('load')
+        $(document).on 'ready page:change', token_way
 
-Things you may want to cover:
+        # install
+        gem 'rails-assets-jquery-tokeninput'
+        //= require jquery-tokeninput
+        *= require jquery-tokeninput
+        *= require jquery-tokeninput/token-input-facebook
 
-* Ruby version
+        # author_tokens
+        # views/books/_form.html.haml
+          = f.input :author_tokens, input_html:{data:{load:@book.authors}}
+        # models/book.rb
+          attr_reader :author_tokens
+          def author_tokens=(ids)
+            self.author_ids = ids.split(",")
+          end
+        # models/author.rb
+          scope :search, ->(query){ where("name like ?", "%#{query}%") if query.present?}
 
-* System dependencies
+* chosen
 
-* Configuration
+        gem 'chosen'
+        //= require chosen-jquery
+        *= require chosen
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+        $(document).on 'ready page:change', ->
+          $('#book_author_ids').chosen
+            allow_single_deselect: true
+            no_results_text: 'No results matched'
+            width: '500px'
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* permit association
+
+        def book_params
+          params.require(:book).permit(:name, author_ids:[])                # need '[]' for collection
+        end
+
