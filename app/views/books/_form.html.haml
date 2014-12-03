@@ -3,7 +3,8 @@
 
   .form-inputs
     = f.input :name
-    = f.association :authors, collection: Author.all
+    -#= f.association :authors, collection: Author.all
+    = f.input :author_tokens, input_html:{data:{load:@book.authors}}
 
   .form-actions
     = f.button :submit
