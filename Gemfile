@@ -1,4 +1,5 @@
 source "http://ruby.taobao.org"
+source 'https://rails-assets.org'
 # source 'https://rubygems.org'
 
 
@@ -67,3 +68,6 @@ group :development, :test do
   gem "rb-fsevent", require: false
   gem "guard-rspec"
 end
+
+gem 'chosen-rails'
+gem 'rails-assets-jquery-tokeninput'
